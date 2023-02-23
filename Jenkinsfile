@@ -25,7 +25,7 @@ pipeline{
                   terraform plan 
                   terraform apply  -auto-approve
                 '''
-            }}
+            }}}
             post{
                 always{
                     echo "========always========"
@@ -38,5 +38,5 @@ pipeline{
                 }
             }
         }
-    }
+    
 
