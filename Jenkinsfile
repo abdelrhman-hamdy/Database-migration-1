@@ -13,7 +13,7 @@ pipeline{
             steps{
                 echo "========Checkout Github repo========"
                 git branch: 'main', url: 'https://github.com/abdelrhman-hamdy/Database-migration-1.git'
-            }
+            }}
         stage("Pre-work"){
             steps{
                 echo "========Deploy pre-work Infrastructure========"
@@ -25,7 +25,7 @@ pipeline{
                   terraform plan 
                   terraform apply  -auto-approve
                 '''
-            }
+            }}
             post{
                 always{
                     echo "========always========"
@@ -38,6 +38,5 @@ pipeline{
                 }
             }
         }
-    }}
+    }
 
-}
