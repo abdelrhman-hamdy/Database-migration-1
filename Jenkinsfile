@@ -7,16 +7,12 @@ pipeline{
         AWS_ACCESS_KEY_ID=credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY=credentials('jenkins-aws-secret-access-key')
         AWS_REGION= "us-east-1"
-        EC2Key= credentials('EC2Key')
-
     }
     stages{
         stage("Checkout"){
             steps{
                 echo "========Checkout Github repo========"
                 git branch: 'main', url: 'https://github.com/abdelrhman-hamdy/Database-migration-1.git'
-                
-
             }
         stage("Pre-work"){
             steps{
