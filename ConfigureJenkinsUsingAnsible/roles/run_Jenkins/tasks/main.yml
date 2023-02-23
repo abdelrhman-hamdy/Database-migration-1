@@ -1,0 +1,20 @@
+
+    - name : copy Docker Compose file
+      become: true
+      copy: 
+        src: docker-compose.yaml
+        dest: /home/ubuntu/docker-compose.yaml
+
+    #- name: include vault
+    #  vars_files:
+    #    - dockerhub.yml
+      #ansible.builtin.include_vars:
+      #  file: dockerhub.yml
+  
+    - name: Log into DockerHub
+      docker_login:
+        username: "{{ dockeruser }}"
+        password: "{{ dockerpass }}"
+    
+    - name: Run docker-compose File
+      command: docker-compose up 
