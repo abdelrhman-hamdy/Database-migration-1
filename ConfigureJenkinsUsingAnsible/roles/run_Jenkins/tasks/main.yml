@@ -16,5 +16,5 @@
         username: "{{ dockeruser }}"
         password: "{{ dockerpass }}"
     
-    - name: Run docker-compose File
+    - name: Run docker-compose File 
       command: docker-compose up -d 
