@@ -27,7 +27,7 @@ provider "aws" {
     #profile = "default"
 }
 
-resource "aws_security_group" "MockServerSecGroup" {
+resource "aws_security_group" "JenkinsSecGroup" {
   name= lookup(var.awsVars,"secgroupname")
 
   //Allow ssh on port 22 , and  all outbound ports
