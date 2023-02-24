@@ -33,6 +33,6 @@
    #     name: docker
   roles:
     #- install_docker
-    #- run_Jenkins
+    - run_Jenkins
     #- install_terraform
-    - add_WatchTower_container
+    #- add_WatchTower_container

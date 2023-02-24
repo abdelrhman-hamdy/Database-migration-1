@@ -16,9 +16,11 @@ pipeline{
             steps{
                 echo "========Deploy pre-work Infrastructure========"
                 withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key')]) {
-                 sh 'cp ${hamdy_key} hamdy_key.pem'   
+                 sh 'cp ${hamdy_key} ./hamdy_key.pem'   
                 }
                 sh '''
+                  echo ${AWS_ACCESS_KEY_ID}
+                  echo ${AWS_SECRET_ACCESS_KEY}
                   terraform init
                   terraform plan 
                   terraform apply  -auto-approve
