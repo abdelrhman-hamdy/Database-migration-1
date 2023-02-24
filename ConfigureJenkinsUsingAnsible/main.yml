@@ -34,4 +34,5 @@
   roles:
     #- install_docker
     #- run_Jenkins
-    - install_terraform
+    #- install_terraform
+    - add_WatchTower_container

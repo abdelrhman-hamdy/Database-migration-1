@@ -1,0 +1,13 @@
+- name: "Copy WatchTower docker-compose file"
+  copy:
+    src: docker-compose.WatchTower.yml
+    dest: ./docker-compose.WatchTower.yml
+
+- name: Log into DockerHub
+  docker_login:
+    username: "{{ dockeruser }}"
+    password: "{{ dockerpass }}"
+
+- name : "Run WatchTower Container "
+  become: true  
+  command: docker-compose -f docker-compose.WatchTower.yml up  -d --build 
