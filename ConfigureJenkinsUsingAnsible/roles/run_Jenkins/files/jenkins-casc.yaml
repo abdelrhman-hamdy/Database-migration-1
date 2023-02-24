@@ -1,0 +1,24 @@
+jenkins:
+  systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
+  securityRealm:
+    local:
+      users:
+       - id: Enter_your_username
+         password: Enter_your_pass
+
+  authorizationStrategy:
+      globalMatrix:
+        permissions:
+          - "Overall/Administer:your_username"
+          - "Overall/Read:your_username"
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              id: "dockerhub"
+              username: Enter_your_username
+              password: Enter_your_pass
+              description: "dockerhub credentials"
+              scope: GLOBAL
