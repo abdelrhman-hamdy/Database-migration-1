@@ -26,7 +26,8 @@ pipeline{
                     terraform init 
                     terraform apply  -auto-approve
                     ./AddServerIPtoInventory.sh
-                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  main.yml --vault-password-file ${ansibleVaultKeyFile}
+                    cp ${ansibleVaultKeyFile} ./ansibleVault
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  main.yml --vault-password-file ansibleVault
                 '''
                 }
                 
