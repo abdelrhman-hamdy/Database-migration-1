@@ -23,7 +23,7 @@ pipeline{
                 withCredentials([file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
                     sh '''
                     cd MongoConfigurationMangement
-                    terrafom init 
+                    terraform init 
                     terraform apply  -auto-approve
                     ./AddServerIPtoInventory.sh
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  main.yml --vault-password-file ${ansibleVaultKeyFile}
