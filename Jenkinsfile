@@ -16,13 +16,10 @@ pipeline{
             steps{
                 echo "========Deploy pre-work Infrastructure========"
                 withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key')]) {
-                 sh 'cp ${hamdy_key} ./hamdy_key.pem'   
+                 sh ''' cp ${hamdy_key} ./hamdy_key.pem
+                        terraform init
+                        terraform apply  -auto-approve'''  
                 }
-                sh '''
-                  terraform init
-                  terraform apply  -auto-approve
-
-                '''
                 withCredentials([file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
                     sh '''
                     cd MongoConfigurationMangement
