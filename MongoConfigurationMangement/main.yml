@@ -2,7 +2,8 @@
 - name : "Inastall and Configure Mongodb server"
   hosts: all
   user: ec2-user
-  
+  vars_files:
+    - MongoUsers.yml
   become : true
   
   gather_facts: false

@@ -1,10 +1,11 @@
 ---
+  
   - name : Adding MongoDB repo 
     become: true
     copy: 
       src: mongodb-org-4.2.repo
       dest: /etc/yum.repos.d/mongodb-org-4.2.repo
-    
+  
   - name : Transfer and executing the Installion and Configuration Script 
     become: true
     environment: 
