@@ -19,12 +19,20 @@ pipeline{
                  sh 'cp ${hamdy_key} ./hamdy_key.pem'   
                 }
                 sh '''
-                  echo ${AWS_ACCESS_KEY_ID}
-                  echo ${AWS_SECRET_ACCESS_KEY}
                   terraform init
-                  terraform plan 
                   terraform apply  -auto-approve
+
                 '''
+                withCredentials([file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
+                    sh '''
+                    cd MongoConfigurationMangement
+                    terrafom init 
+                    terraform apply  -auto-approve
+                    ./AddServerIPtoInventory.sh
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  main.yml --vault-password-file ${ansibleVaultKeyFile}
+                '''
+                }
+                
             }}}
             post{
                 always{

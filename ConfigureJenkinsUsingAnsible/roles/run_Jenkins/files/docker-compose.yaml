@@ -8,6 +8,7 @@ services:
       - jenkins_data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
+      - /usr/bin/docker-compose:/usr/bin/docker-compose
   watchtower:
     image: index.docker.io/containrrr/watchtower:latest
     volumes:

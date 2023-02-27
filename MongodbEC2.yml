@@ -1,0 +1,34 @@
+Resources:
+    mySecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: Allow ssh and  Mongodb
+            VpcId: vpc-0f1dbc5e72b9a567f
+            SecurityGroupIngress:
+            - IpProtocol: tcp
+              FromPort: 22
+              ToPort: 22
+              CidrIp: 0.0.0.0/0
+            - IpProtocol: tcp
+              FromPort: 27017
+              ToPort: 27017
+              CidrIp: 0.0.0.0/0
+            SecurityGroupEgress:
+            - IpProtocol: -1
+              FromPort: -1
+              ToPort: -1
+              CidrIp: 0.0.0.0/0
+    Ec2Instance:
+      Type: AWS::EC2::Instance
+      Properties:
+        ImageId: ami-0aa7d40eeae50c9a9
+        InstanceType: t2.micro
+        KeyName: hamdy_key
+        NetworkInterfaces:
+          - AssociatePublicIpAddress: "true"
+            DeviceIndex: "0"
+            GroupSet:
+              - Ref: "mySecurityGroup"
+        Tags: 
+                - Key: Name 
+                  Value: MongodbServer

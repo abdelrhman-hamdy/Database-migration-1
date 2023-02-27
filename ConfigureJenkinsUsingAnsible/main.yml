@@ -13,26 +13,26 @@
   vars_files:
     - dockerhub.yml
  
-  #pre_tasks:
-  #  - name: "wait 600 seconds for target connection to become reachable/usable."
-  #    wait_for_connection:
-  #  - name: "update apt packages."
-  #    become: yes
-   #   apt:
-   #     update_cache: yes
-   # - name: "upgrade packages"
-   #   become: yes
-   #   apt:
-   #     upgrade: yes
-   # - name: "install Python and Docker for ansible"
-   #   become: yes
-   #   apt:
-   #     name: ["python","pip"]
-   # - name: Install Docker python package for ansible
-   #   ansible.builtin.pip:
-   #     name: docker
+  pre_tasks:
+    - name: "wait 600 seconds for target connection to become reachable/usable."
+      wait_for_connection:
+    - name: "update apt packages."
+      become: yes
+      apt:
+        update_cache: yes
+    - name: "upgrade packages"
+      become: yes
+      apt:
+        upgrade: yes
+    - name: "install Python and Docker for ansible"
+      become: yes
+      apt:
+        name: ["python","pip"]
+    - name: Install Docker python package for ansible
+      ansible.builtin.pip:
+        name: docker
   roles:
-    #- install_docker
+    - install_docker
     - run_Jenkins
-    #- install_terraform
+    - install_terraform
     #- add_WatchTower_container

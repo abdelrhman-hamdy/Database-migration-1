@@ -9,51 +9,45 @@ terraform {
 }
 variable "awsVars" {
     type = map
-    default = { 
+    default = {
     region = "us-east-1"
-    ami= "ami-09cd747c78a9add63"
-    itype = "t3.small"
+    ami= "ami-0aa7d40eeae50c9a9"
+    itype = "t2.micro"
     publicip = true
     keyname = "hamdy_key"
-    secgroupname = "JenkinsSecGroup"
-    EC2name=  "JenkinsServer"
-    aws_creds_path = "/home/hamy/.aws/credentials"
+    secgroupname = "MongoServerSecGroup"
+    EC2name=  "MongodbServer"
+
 }
-} 
+}
 provider "aws" {
-    region = lookup(var.awsVars,"region")
-    shared_credentials_file  = lookup(var.awsVars,"aws_creds_path" )
-    profile = "default"
 }
 
-resource "aws_security_group" "JenkinsSecGroup" {
+resource "aws_security_group" "MongoServerSecGroup" {
   name= lookup(var.awsVars,"secgroupname")
 
-  //Allow ssh on port 22 , jenkins server on 8080, and  all outbound ports
+  //Allow ssh on port 22 , and  all outbound ports
   ingress  {
     cidr_blocks = [ "0.0.0.0/0" ]
     from_port = 22
     protocol = "tcp"
     to_port = 22
   }
-  ingress { 
-  cidr_blocks = [ "0.0.0.0/0" ]
-    from_port = 8080
+  ingress  {
+    cidr_blocks = [ "0.0.0.0/0" ]
+    from_port = 27017
     protocol = "tcp"
-    to_port = 8080
+    to_port = 27017
   }
   egress  {
     cidr_blocks = [ "0.0.0.0/0" ]
     from_port = 0
     protocol = "-1"
     to_port = 0
-  } 
-  
-  
+  }
 }
 
-
-resource "aws_instance" "JenkinsServer" {
+resource "aws_instance" "MongodbServer" {
     ami= lookup(var.awsVars,"ami")
     instance_type = lookup(var.awsVars,"itype")
     tags = {
@@ -62,12 +56,12 @@ resource "aws_instance" "JenkinsServer" {
     key_name = lookup(var.awsVars,"keyname")
     associate_public_ip_address = lookup(var.awsVars,"publicip")
     vpc_security_group_ids = [
-        aws_security_group.JenkinsSecGroup.id
+        aws_security_group.MongoServerSecGroup.id
     ]
-    
-    depends_on = [ aws_security_group.JenkinsSecGroup ]
+
+    depends_on = [ aws_security_group.MongoServerSecGroup ]
 }
 
-output "JenkinsServerIP" {
-    value = aws_instance.JenkinsServer.public_ip
+output "MongodbServerIP" {
+    value = aws_instance.MongodbServer.public_ip
 }
