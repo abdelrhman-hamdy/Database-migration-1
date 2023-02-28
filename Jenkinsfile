@@ -5,6 +5,7 @@ pipeline{
         AWS_ACCESS_KEY_ID=credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY=credentials('jenkins-aws-secret-access-key')
         AWS_REGION= "us-east-1"
+        MONGO_DB_PASSWORD=credentials('mongo-db-password')
     }
     stages{
         stage("Checkout"){
@@ -15,7 +16,7 @@ pipeline{
         stage("Pre-work"){
             steps{
                 echo "========Deploy pre-work Infrastructure========"
-                
+
                 echo "========Loading Required credentials========"
                 withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key'),
                                  file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
@@ -35,6 +36,7 @@ pipeline{
                 
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
+                    ./GetEnvForClient.sh ${MONGO_DB_PASSWORD} mongodb
                     cd ConfigurationManagement
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ansibleVault
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ansibleVault
