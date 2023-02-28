@@ -1,0 +1,17 @@
+{
+  "name": "devops-assessment",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node server.js",
+    "client": "node client.js"
+  },
+  "author": "Kareem Khaled",
+  "license": "ISC",
+  "dependencies": {
+    "dummy-json": "^3.0.4",
+    "json-socket": "^0.3.0",
+    "moment": "^2.29.1",
+    "mongodb": "4.2"
+  }
+}
