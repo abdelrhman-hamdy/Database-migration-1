@@ -1,3 +1,4 @@
 hamdy_key.pem
 passwords.txt
-DockerCustomImages/MockServerImage/node_modules
+/DockerCustomImages/MockServerImage/node_modules
+/IaC/dev/*terraform*

@@ -1,13 +1,6 @@
 terraform {
   required_version = ">= 0.14.9"
 }
-    ami= "ami-0aa7d40eeae50c9a9"
-    itype = "t2.micro"
-    publicip = true
-    keyname = "hamdy_key"
-    secgroupname = "MockServerSecGroup"
-    EC2name=  "MosckServer"
-
 resource "aws_security_group" "MockServerSecGroup" {
   name= var.secgroupname
 

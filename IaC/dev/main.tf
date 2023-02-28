@@ -15,7 +15,7 @@ provider "aws" {
 module "JenkinsServer" {
   source = "../modules/CI-CD"
   ami= "ami-09cd747c78a9add63"
-  itype = "t3.small"
+  itype = "t2.micro"
   publicip = true
   keyname = "hamdy_key"
   secgroupname = "JenkinsSecGroup"
@@ -24,7 +24,7 @@ module "JenkinsServer" {
 
 module "MosckServer" {
   source = "../modules/MockServer"
-  ami= "ami-0aa7d40eeae50c9a9"
+  ami= "ami-09cd747c78a9add63"
   itype = "t2.micro"
   publicip = true
   keyname = "hamdy_key"
@@ -43,12 +43,12 @@ module "MongodbServer" {
 
 }
 
-output "JenkinsData" {
-  value = module.JenkinsServer.JenkinsServer.publicip
+output "jenkins" {
+  value = module.JenkinsServer.JenkinsServer.public_ip
 }
-output "MockData" {
-  value = module.MosckServer.MongodbServer.publicip
+output "mockserver" {
+  value = module.MosckServer.MosckServer.public_ip
 }
-output "Mongodb" {
-  value = module.MongodbServer.MongodbServer.publicip
+output "mongodb" {
+  value = module.MongodbServer.MongodbServer.public_ip
 }

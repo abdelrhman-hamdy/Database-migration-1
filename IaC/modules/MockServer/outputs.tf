@@ -1,3 +1,3 @@
-output "MongodbServer" {
-    value = aws_instance.MongodbServer
+output "MosckServer" {
+    value = aws_instance.MosckServer
 }

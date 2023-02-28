@@ -1,4 +1,4 @@
- output "JenkinsServer" {
-    value = aws_instance.JenkinsServer
+ output "MongodbServer" {
+    value = aws_instance.MongodbServer
     description = "All Jenkins server metadata"
 }

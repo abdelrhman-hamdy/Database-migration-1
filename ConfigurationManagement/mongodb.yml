@@ -1,9 +1,10 @@
 ---
 - name : "Inastall and Configure Mongodb server"
-  hosts: Mongodb
+  hosts: mongodb
   user: ec2-user
   become : true
-  
+  vars_files:
+      - ./vars/MongoVars.yml
   gather_facts: false
   vars:
     - ansible_python_interpreter: /usr/bin/python3

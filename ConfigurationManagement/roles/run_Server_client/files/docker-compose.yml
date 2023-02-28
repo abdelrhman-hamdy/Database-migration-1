@@ -8,4 +8,6 @@ services:
     env_file:
       - .env
     image: abdelrhmanhamdy/mongoclient
+    depends_on:
+      - MockServer
 

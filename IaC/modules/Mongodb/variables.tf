@@ -1,8 +1,3 @@
- variable "region" {
-    type = string
-    description = " AWS region"
-  
-}
  variable "ami" {
     type = string
     description = " EC2 Instance's AMI"

@@ -2,7 +2,8 @@
 - name : "Configure Jenkins Server"
   hosts: jenkins
   user: ubuntu
-  
+  vars_files:
+    - ./vars/dockerhub.yml
   become : true
   
   gather_facts: false
