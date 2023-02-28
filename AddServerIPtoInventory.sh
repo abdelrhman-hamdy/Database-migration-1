@@ -13,7 +13,7 @@ IP_line_number=$(grep -A1 -n $1 $2 | tail -1  | cut -d- -f1)    # Grep the line 
 
 if [ ! -z $IP_line_number  ]; then
 
-sed -iE "$IP_line_number s/.*/$ServerIP/" $2                    # modify the IP with the new one
+sed -i -E "$IP_line_number s/.*/$ServerIP/" $2                    # modify the IP with the new one
 
 else
     echo "[$1]" >> $2                                           # Add the IP to the file if doesn't exist

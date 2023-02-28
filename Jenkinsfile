@@ -15,21 +15,31 @@ pipeline{
         stage("Pre-work"){
             steps{
                 echo "========Deploy pre-work Infrastructure========"
-                withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key')]) {
-                 sh ''' cp ${hamdy_key} ./hamdy_key.pem
+                
+                echo "========Loading Required credentials========"
+                withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key'),
+                                 file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
+                 sh 'cp ${hamdy_key} ./hamdy_key.pem'  
+                 sh 'cp ${ansibleVaultKeyFile} ./ansibleVault' 
+                }
+
+                echo "========Provisioning Infrastructure========"
+                sh '''  cd IaC/dev
                         terraform init
-                        terraform apply  -auto-approve'''  
-                }
-                withCredentials([file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
-                    sh '''
-                    cd MongoConfigurationMangement
-                    terraform init 
-                    terraform apply  -auto-approve
-                    ./AddServerIPtoInventory.sh
-                    cp ${ansibleVaultKeyFile} ./ansibleVault
-                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  main.yml --vault-password-file ansibleVault
+                        terraform apply -target=module.MongodbServer -target=module.MosckServer  -auto-approve
+                         '''
+
+                echo "========Creating Inventory File========"
+                sh 'cd IaC/dev;../../AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
+                sh 'cd IaC/dev;../../AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory '
+                
+                echo "========Configuring Mongodb and Mockserver ========"
+                sh ''' 
+                    cd ConfigurationManagement
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ansibleVault
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ansibleVault
                 '''
-                }
+                
                 
             }}}
             post{
