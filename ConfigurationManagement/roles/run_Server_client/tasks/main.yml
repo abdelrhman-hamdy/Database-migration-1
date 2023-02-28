@@ -1,7 +1,12 @@
     - name : Copy Docker Compose file
       copy: 
-        src: docker-compose.yaml
-        dest: /home/ubuntu/docker-compose.yaml
+        src: docker-compose.yml
+        dest: /home/ec2-user/docker-compose.yaml
+    - name : Copy enviromentfile file
+      copy: 
+        src: .env
+        dest: /home/ec2-user/.env
+  
   
     - name: Log into DockerHub
       docker_login:
@@ -11,5 +16,3 @@
     - name: Run docker-compose File 
       command: docker-compose up -d 
     
-    - name: "Add docker-compose to run at startup "
-      ansible.builtin.script: AddCronJob.sh

@@ -1,5 +1,5 @@
 ---
-  
+
   - name : Adding MongoDB repo 
     become: true
     copy: 
@@ -8,6 +8,8 @@
   
   - name : Transfer and executing the Installion and Configuration Script 
     become: true
+    vars_files:
+      - MongoVars.yml
     environment: 
       MongoAdminUser: "{{ MongoAdminUser }}"
       MongoAdminPass: "{{ MongoAdminPass }}"

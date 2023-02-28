@@ -11,7 +11,7 @@ variable "awsVars" {
     type = map
     default = { 
     region = "us-east-1"
-    ami= "ami-09cd747c78a9add63"
+    ami= "ami-0aa7d40eeae50c9a9"
     itype = "t2.micro"
     publicip = true
     keyname = "hamdy_key"
@@ -27,7 +27,7 @@ provider "aws" {
     #profile = "default"
 }
 
-resource "aws_security_group" "JenkinsSecGroup" {
+resource "aws_security_group" "MockServerSecGroup" {
   name= lookup(var.awsVars,"secgroupname")
 
   //Allow ssh on port 22 , and  all outbound ports
@@ -54,10 +54,10 @@ resource "aws_instance" "MosckServer" {
     key_name = lookup(var.awsVars,"keyname")
     associate_public_ip_address = lookup(var.awsVars,"publicip")
     vpc_security_group_ids = [
-        aws_security_group.JenkinsSecGroup.id
+        aws_security_group.MockServerSecGroup.id
     ]
     
-    depends_on = [ aws_security_group.JenkinsSecGroup ]
+    depends_on = [ aws_security_group.MockServerSecGroup ]
 }
 
 output "MosckServerIP" {

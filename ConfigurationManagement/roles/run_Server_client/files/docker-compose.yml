@@ -1,0 +1,11 @@
+version: "3"
+services:
+  MockServer: 
+    image: abdelrhmanhamdy/server
+    ports:
+      - "8282:8282"
+  MongoClient:
+    env_file:
+      - .env
+    image: abdelrhmanhamdy/mongoclient
+
