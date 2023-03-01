@@ -39,7 +39,7 @@ pipeline{
                 sh ''' 
                     ./GetVarsForClient.sh ${MONGO_DB_PASSWORD} mongodb
                     cd ConfigurationManagement
-                    ansible-playbook -i inventory --private-key ../mongodb.pem.pem  mongodb.yml --vault-password-file ../ansibleVault
+                    ansible-playbook -i inventory --private-key ../mongodb.pem  mongodb.yml --vault-password-file ../ansibleVault
                     ansible-playbook -i inventory --private-key ../mockserver.pem  mockserver.yml --vault-password-file ../ansibleVault
                 '''
                 
