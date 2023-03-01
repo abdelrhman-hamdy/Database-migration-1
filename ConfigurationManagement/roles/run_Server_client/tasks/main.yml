@@ -16,3 +16,5 @@
     - name: Run docker-compose File 
       command: docker-compose up -d --build
     
+    - name: "Add docker-compose to run at startup "
+      ansible.builtin.script: AddCronJob.sh
