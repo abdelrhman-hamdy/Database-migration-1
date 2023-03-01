@@ -18,7 +18,7 @@ pipeline{
                 echo "========Deploy pre-work Infrastructure========"
 
                 echo "========Loading Required credentials========"
-                withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key'),
+                withCredentials([file(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key'),
                                  file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
                  sh 'cp ${hamdy_key} ./hamdy_key.pem'  
                  sh 'cp ${ansibleVaultKeyFile} ./ansibleVault' 
