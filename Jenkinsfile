@@ -33,9 +33,9 @@ pipeline{
                          '''
 
                 echo "========Creating Inventory File========"
-                sh 'cd IaC/dev;../../AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
                 sh 'cd IaC/dev;../../AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory '
-                
+                sh 'cd IaC/dev;../../AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
+                                
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
                     ./GetVarsForClient.sh ${MONGO_DB_PASSWORD} mongodb
