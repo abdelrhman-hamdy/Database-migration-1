@@ -19,10 +19,10 @@ pipeline{
                 echo "========Deploy pre-work Infrastructure========"
 
                 echo "========Loading Required credentials========"
-                withCredentials([sshUserPrivateKey(credentialsId: 'mockserver', keyFileVariable: 'mockserver'),
-                                sshUserPrivateKey(credentialsId: 'mongodb', keyFileVariable: 'mongodb'),
+                withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key'),
                                  file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
-                 sh 'cp ${mockserver} ./mockserver.pem;cp ${mongodb} ./mongodb.pem' 
+                // sh 'cp ${mockserver} ./mockserver.pem;cp ${mongodb} ./mongodb.pem' 
+                   sh 'cp ${hamdy_key} ./hamdy_key.pem' 
                  sh 'cp ${ansibleVaultKeyFile} ./ansibleVault' 
                 }
 
@@ -39,10 +39,9 @@ pipeline{
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
                     ./GetVarsForClient.sh ${MONGO_DB_PASSWORD} mongodb
-                    chmod 600 hamdy_key.pem
                     cd ConfigurationManagement
-                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ../ansibleVault
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ../ansibleVault
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ../ansibleVault
                 '''
                 
                 
