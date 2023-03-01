@@ -53,6 +53,7 @@ pipeline{
                 }
                 failure{
                     echo "========A execution failed========"
+                    sh 'cd IaC/dev;terrafom destroy -auto-approve'
                 }
             }
         }
