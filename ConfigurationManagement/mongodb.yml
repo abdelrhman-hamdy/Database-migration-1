@@ -12,11 +12,11 @@
  
   pre_tasks:
 
-    - name: "wait 100 seconds for target connection to become reachable/usable."
+    - name: "wait 200 seconds for target connection to become reachable/usable."
       wait_for_connection:
-        timeout: 100
+        timeout: 200
     - name: Update yum cache
-      ansible.builtin.yum:
+      ansible.builtin.dnf:
        update_cache: true
        state : latest
 
