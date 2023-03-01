@@ -9,7 +9,9 @@ pipeline{
     }
     stages{
         stage("Checkout"){
+                cleanWs()
             steps{
+
                 echo "========Checkout Github repo========"
                 git branch: 'main', url: 'https://github.com/abdelrhman-hamdy/Database-migration-1.git'
             }}
