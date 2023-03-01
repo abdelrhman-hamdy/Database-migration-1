@@ -1,3 +1,3 @@
-output "MosckServer" {
-    value = aws_instance.MosckServer
+output "MockServer" {
+    value = aws_instance.MockServer
 }

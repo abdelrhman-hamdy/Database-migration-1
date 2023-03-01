@@ -2,11 +2,13 @@
   - name: Set Docker Repository
     become: true
     shell: |
+        dpkg -s docker-ce
+        if [ $? -nq 0 ]; then
         apt-get -y install apt-transport-https ca-certificates curl gnupg2 software-properties-common lsb-release
         mkdir -m 0755 -p /etc/apt/keyrings
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" |  tee /etc/apt/sources.list.d/docker.list > /dev/null
-  
+        fi 
   - name : Install Docker
     become: true
     apt: 

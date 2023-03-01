@@ -22,7 +22,7 @@ module "JenkinsServer" {
   EC2name=  "JenkinsServer" 
 }
 
-module "MosckServer" {
+module "MockServer" {
   source = "../modules/MockServer"
   ami= "ami-09cd747c78a9add63"
   itype = "t2.micro"
@@ -47,8 +47,13 @@ output "jenkins" {
   value = module.JenkinsServer.JenkinsServer.public_ip
 }
 output "mockserver" {
-  value = module.MosckServer.MosckServer.public_ip
+  value = module.MockServer.MockServer.public_ip
 }
+
+output "ServerPrivateIp" {
+  value = module.MockServer.MockServer.private_ip
+}
+
 output "mongodb" {
   value = module.MongodbServer.MongodbServer.public_ip
 }

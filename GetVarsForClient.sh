@@ -7,8 +7,7 @@
 dbpassword=$1
 
 dbhost=$(grep -A1 $2 ConfigurationManagement/inventory | tail -1)
-serverhost=$(grep -A1 mockserver ConfigurationManagement/inventory | tail -1)
-
+serverhost=$(grep -A1 ServerPrivateIp ConfigurationManagement/inventory | tail -1)
 env_path=ConfigurationManagement/roles/run_Server_client/files/.env
 
 sed -i -E "s/dbpassword=.*/dbpassword=$dbpassword/" $env_path

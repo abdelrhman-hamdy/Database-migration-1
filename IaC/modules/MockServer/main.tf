@@ -19,7 +19,7 @@ resource "aws_security_group" "MockServerSecGroup" {
   } 
 }
 
-resource "aws_instance" "MosckServer" {
+resource "aws_instance" "MockServer" {
     ami= var.ami
     instance_type =var.itype
     tags = {
