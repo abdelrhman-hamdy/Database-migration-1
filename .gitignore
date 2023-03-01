@@ -1,4 +1,5 @@
 hamdy_key.pem
+ansibleVault
 passwords.txt
 /DockerCustomImages/MockServerImage/node_modules
 /IaC/dev/*terraform*

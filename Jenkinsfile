@@ -12,7 +12,7 @@ pipeline{
                 
             steps{
                 echo "========Checkout Github repo========"
-                git branch: 'main', url: 'https://github.com/abdelrhman-hamdy/Database-migration-1.git'
+                //git branch: 'main', url: 'https://github.com/abdelrhman-hamdy/Database-migration-1.git'
             }}
         stage("Pre-work"){
             steps{
@@ -39,9 +39,10 @@ pipeline{
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
                     ./GetVarsForClient.sh ${MONGO_DB_PASSWORD} mongodb
+                    chmod 600 hamdy_key.pem
                     cd ConfigurationManagement
-                    ansible-playbook -i inventory --private-key ../mongodb.pem  mongodb.yml --vault-password-file ../ansibleVault
-                    ansible-playbook -i inventory --private-key ../mockserver.pem  mockserver.yml --vault-password-file ../ansibleVault
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ../ansibleVault
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ../ansibleVault
                 '''
                 
                 
