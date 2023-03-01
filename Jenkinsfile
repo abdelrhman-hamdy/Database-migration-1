@@ -53,7 +53,7 @@ pipeline{
                 }
                 failure{
                     echo "========A execution failed========"
-                    sh 'cd IaC/dev;terrafom destroy -auto-approve'
+                    sh 'cd IaC/dev;terraform destroy -auto-approve'
                 }
             }
         }
