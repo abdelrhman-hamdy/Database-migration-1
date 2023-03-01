@@ -36,7 +36,7 @@ pipeline{
                 
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
-                    ./GetEnvForClient.sh ${MONGO_DB_PASSWORD} mongodb
+                    ./GetVarsForClient.sh ${MONGO_DB_PASSWORD} mongodb
                     cd ConfigurationManagement
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ansibleVault
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ansibleVault

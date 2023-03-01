@@ -15,7 +15,7 @@ provider "aws" {
 module "JenkinsServer" {
   source = "../modules/CI-CD"
   ami= "ami-09cd747c78a9add63"
-  itype = "t2.micro"
+  itype = "t3.small"
   publicip = true
   keyname = "hamdy_key"
   secgroupname = "JenkinsSecGroup"
