@@ -21,7 +21,6 @@ pipeline{
                 echo "========Loading Required credentials========"
                 withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key'),
                                  file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
-                // sh 'cp ${mockserver} ./mockserver.pem;cp ${mongodb} ./mongodb.pem' 
                    sh 'cp ${hamdy_key} ./hamdy_key.pem' 
                  sh 'cp ${ansibleVaultKeyFile} ./ansibleVault' 
                 }
@@ -29,7 +28,7 @@ pipeline{
                 echo "========Provisioning Infrastructure========"
                 sh '''  cd IaC/dev
                         terraform init
-                        terraform apply -target=module.MongodbServer -target=module.MosckServer  -auto-approve
+                        terraform apply -target=module.MongodbServer -target=module.MockServer  -auto-approve
                          '''
 
                 echo "========Creating Inventory File========"
