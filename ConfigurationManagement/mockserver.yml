@@ -32,5 +32,5 @@
         name: docker
 
   roles :
-    #- install_docker
+    - install_docker
     - run_Server_client
