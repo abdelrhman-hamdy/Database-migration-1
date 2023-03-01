@@ -21,7 +21,7 @@ pipeline{
                 withCredentials([sshUserPrivateKey(credentialsId: 'mockserver', keyFileVariable: 'mockserver'),
                                 sshUserPrivateKey(credentialsId: 'mongodb', keyFileVariable: 'mongodb'),
                                  file(credentialsId: 'ansible_password', variable: 'ansibleVaultKeyFile')]) {
-                 sh 'cp ${mockserver} ./mockserver.pem;cp ${mongodb} ./mongodb.pem' '  
+                 sh 'cp ${mockserver} ./mockserver.pem;cp ${mongodb} ./mongodb.pem' 
                  sh 'cp ${ansibleVaultKeyFile} ./ansibleVault' 
                 }
 
