@@ -9,7 +9,7 @@ echo "Failed to start Mongodb Server"
 fi 
 }
 
-dnf install mongodb-org -y
+yum install mongodb-org -y
 
 sed -i -E 's/^  bindIp: (127.0.0.1)/  bindIp: 0\.0\.0\.0/'  /etc/mongod.conf    # configure mongodb to accept requests from any ip 
 

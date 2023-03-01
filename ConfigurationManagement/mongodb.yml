@@ -7,7 +7,7 @@
       - ./vars/MongoVars.yml
   gather_facts: false
   vars:
-    - ansible_python_interpreter: /usr/bin/python3
+    - ansible_python_interpreter: /usr/bin/python2
     - ansible_host_key_checking: false
  
   pre_tasks:
@@ -16,7 +16,7 @@
       wait_for_connection:
         timeout: 200
     - name: Update yum cache
-      ansible.builtin.dnf:
+      ansible.builtin.yum:
        update_cache: true
        state : latest
 
