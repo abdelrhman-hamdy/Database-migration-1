@@ -36,9 +36,9 @@ pipeline{
                          '''
 
                 echo "========Creating Inventory File========"
-                sh 'cd IaC/dev; . ../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory '
-                sh 'cd IaC/dev; . ../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
-                sh 'cd IaC/dev; . ../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'               
+                sh '#!/bin/bash;cd IaC/dev; source ../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory '
+                sh '#!/bin/bash;cd IaC/dev; source ../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
+                sh '#!/bin/bash;cd IaC/dev; source ../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'               
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
                     ./scripts/GetVarsForMongoClient.sh 
