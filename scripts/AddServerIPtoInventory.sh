@@ -23,4 +23,4 @@ fi
 
 
 
-echo 192.168.111111111111
+echo $ServerIP
