@@ -39,24 +39,18 @@ pipeline{
                 script{
                 Mongodb_public_ip= sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory', returnStdout: true)
                 }
-                echo "${Mongodb_public_ip}"
-                sh "${Mongodb_public_ip}"
+                echo "REBNA YOUSETER 1 :${Mongodb_public_ip}"
                 script{ 
                 MockServer_public_ip= sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory', returnStdout: true)
                 }
-                echo "${MockServer_public_ip}"
-                sh '''
-                    if [ -z ${MockServer_public_ip} ];then
-                    exit 1 
-                    fi 
-                    '''
-                sh 'exit 1'
-                
+
+                echo "REBNA YOUSETER  2 : ${MockServer_public_ip}"
+
                 script{
                 MockServer_private_ip=sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory',  returnStdout: true)          
                 }
-                echo "${MockServer_private_ip}"
-                sh "${MockServer_private_ip}"
+                echo "REBNA YOUSETER 3: ${MockServer_private_ip}"
+
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
                     ./scripts/GetVarsForMongoClient.sh 
