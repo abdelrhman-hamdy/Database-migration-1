@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 #Getting documents' total number to make sure that client is inserting data to db
 docs_number1=$(mongosh --quiet --host ${Mongodb_public_ip} -u $DB_USERNAME -p $DB_PASSWORD --eval 'use server' --eval 'db.customer.countDocuments({})')

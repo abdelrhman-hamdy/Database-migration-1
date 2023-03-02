@@ -49,8 +49,13 @@ pipeline{
                 script{
                 MockServer_private_ip=sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory',  returnStdout: true)          
                 }
-                echo "REBNA YOUSETER 3: ${MockServer_private_ip}"
 
+                echo "REBNA YOUSETER 3: ${MockServer_private_ip}"
+                environment {
+                   Mongodb_public_ip="${Mongodb_public_ip}"
+                    MockServer_public_ip="${MockServer_public_ip}"
+                    MockServer_private_ip="${MockServer_private_ip}"
+                }
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
                     ./scripts/GetVarsForMongoClient.sh 
