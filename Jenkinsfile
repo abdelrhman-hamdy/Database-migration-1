@@ -42,6 +42,12 @@ pipeline{
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ../ansibleVault
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ../ansibleVault
                 '''
+
+                echo "========Testing That Client reads data from server and inserts in the database ========"
+                sh '''
+                    source Testing/MongodbCred.sh   # get mongodb credentails and export them as env vars
+                    source Testing/TestClientInsertDataToDB.sh   # smoke testing of the system 
+                    '''
                 
                 
             }}}
