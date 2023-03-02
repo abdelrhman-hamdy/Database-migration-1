@@ -22,4 +22,4 @@ fi
 
 
 
-
+export $1=$ServerIP

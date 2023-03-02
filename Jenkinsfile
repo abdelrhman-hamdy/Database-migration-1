@@ -5,7 +5,11 @@ pipeline{
         AWS_ACCESS_KEY_ID=credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY=credentials('jenkins-aws-secret-access-key')
         AWS_REGION= "us-east-1"
-        MONGO_DB_PASSWORD=credentials('mongo-db-password')
+        DB_PASSWORD=credentials('mongo-db-password')
+        DB_USERNAME="hamdy"
+        TF_VAR_db_password=${DB_PASSWORD}
+        TF_VAR_db_username=${DB_USERNAME}
+        TF_VAR_keyname="hamdy_key"
     }
     stages{
         stage("Checkout"){
@@ -32,12 +36,12 @@ pipeline{
                          '''
 
                 echo "========Creating Inventory File========"
-                sh 'cd IaC/dev;../../AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory '
-                sh 'cd IaC/dev;../../AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
-                sh 'cd IaC/dev;../../AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'               
+                sh 'cd IaC/dev; source ../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory '
+                sh 'cd IaC/dev; source../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
+                sh 'cd IaC/dev; source../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'               
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
-                    ./GetVarsForClient.sh ${MONGO_DB_PASSWORD} mongodb
+                    ./scripts/GetVarsForMongoClient.sh 
                     cd ConfigurationManagement
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ../ansibleVault
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ../ansibleVault
@@ -45,11 +49,21 @@ pipeline{
 
                 echo "========Testing That Client reads data from server and inserts in the database ========"
                 sh '''
-                    source Testing/MongodbCred.sh   # get mongodb credentails and export them as env vars
                     source Testing/TestClientInsertDataToDB.sh   # smoke testing of the system 
                     '''
+
+                echo "======== Provisioning Mysql RDS ========"
+                sh '''  cd IaC/dev
+                        terraform init
+                        terraform apply -target=module.Mysql -auto-approve
+                         '''
                 
-                
+                echo "========Deploy the new client ========"
+                sh ''' 
+                    ./scripts/GetVarsForMysqlClient.sh  
+                    cd ConfigurationManagement
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  MysqlClient.yml
+                '''
             }}}
             post{
                 always{

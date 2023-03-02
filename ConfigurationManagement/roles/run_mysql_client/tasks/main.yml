@@ -1,0 +1,7 @@
+    - name : Copy enviromentfile file
+      copy: 
+        src: .env
+        dest: /home/ubuntu/.Mysqlenv
+    
+    - name: Run Mysql Client  container
+      command:  docker run --name mysqlclient -d --env-file .Mysqlenv --restart on-failure:3 abdelrhmanhamdy/mysqlclient
