@@ -3,22 +3,11 @@ jenkins:
   securityRealm:
     local:
       users:
-       - id: Enter_your_username
-         password: Enter_your_pass
+       - id: hamdy
+         password: VTG266iFe4QfEBYL2eNRHH
 
   authorizationStrategy:
       globalMatrix:
         permissions:
-          - "Overall/Administer:your_username"
-          - "Overall/Read:your_username"
-
-credentials:
-  system:
-    domainCredentials:
-      - credentials:
-          - usernamePassword:
-              id: "dockerhub"
-              username: Enter_your_username
-              password: Enter_your_pass
-              description: "dockerhub credentials"
-              scope: GLOBAL
+          - "Overall/Administer:hamdy"
+          - "Overall/Read:hamdy"

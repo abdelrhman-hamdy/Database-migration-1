@@ -7,8 +7,8 @@ pipeline{
         AWS_REGION= "us-east-1"
         DB_PASSWORD=credentials('mongo-db-password')
         DB_USERNAME="hamdy"
-        TF_VAR_db_password=${DB_PASSWORD}
-        TF_VAR_db_username=${DB_USERNAME}
+        TF_VAR_db_password="${DB_PASSWORD}" 
+        TF_VAR_db_username="${DB_USERNAME}"
         TF_VAR_keyname="hamdy_key"
     }
     stages{
