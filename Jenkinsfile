@@ -45,7 +45,13 @@ pipeline{
                 MockServer_public_ip= sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory', returnStdout: true)
                 }
                 echo "${MockServer_public_ip}"
-                sh "${MockServer_public_ip}"
+                sh '''
+                    if [ -z ${MockServer_public_ip} ];then
+                    exit 1 
+                    fi 
+                    '''
+                sh 'exit 1'
+                
                 script{
                 MockServer_private_ip=sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory',  returnStdout: true)          
                 }
