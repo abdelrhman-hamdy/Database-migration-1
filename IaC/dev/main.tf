@@ -17,7 +17,7 @@ module "JenkinsServer" {
   ami= "ami-09cd747c78a9add63"
   itype = "t3.small"
   publicip = true
-  keyname = "hamdy_key"
+  keyname = var.keyname
   secgroupname = "JenkinsSecGroup"
   EC2name=  "JenkinsServer" 
 }
@@ -27,7 +27,7 @@ module "MockServer" {
   ami= "ami-09cd747c78a9add63"
   itype = "t2.micro"
   publicip = true
-  keyname = "hamdy_key"
+  keyname = var.keyname
   secgroupname = "MockServerSecGroup"
   EC2name=  "MosckServer" 
 }
@@ -37,11 +37,19 @@ module "MongodbServer" {
     ami= "ami-0aa7d40eeae50c9a9"
     itype = "t2.micro"
     publicip = true
-    keyname = "hamdy_key"
+    keyname = var.keyname
     secgroupname = "MongoServerSecGroup"
     EC2name=  "MongodbServer"
 
 }
+
+module "Mysql" {
+  source = "../modules/Mysql"
+  db_username=var.db_username
+  db_password=var.db_password
+
+}
+
 
 output "jenkins" {
   value = module.JenkinsServer.JenkinsServer.public_ip
@@ -56,4 +64,9 @@ output "ServerPrivateIp" {
 
 output "mongodb" {
   value = module.MongodbServer.MongodbServer.public_ip
+}
+
+
+output "Mysql_endpoint" {
+  value = module.Mysql.mysql-database.endpoint
 }
