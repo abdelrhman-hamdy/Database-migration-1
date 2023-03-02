@@ -36,9 +36,9 @@ pipeline{
                          '''
 
                 echo "========Creating Inventory File========"
-                sh 'cd IaC/dev; source ../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory '
-                sh 'cd IaC/dev; source../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
-                sh 'cd IaC/dev; source../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'               
+                sh 'cd IaC/dev; . ../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory '
+                sh 'cd IaC/dev; . ../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
+                sh 'cd IaC/dev; . ../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'               
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
                     ./scripts/GetVarsForMongoClient.sh 
@@ -49,7 +49,7 @@ pipeline{
 
                 echo "========Testing That Client reads data from server and inserts in the database ========"
                 sh '''
-                    source Testing/TestClientInsertDataToDB.sh   # smoke testing of the system 
+                    . Testing/TestClientInsertDataToDB.sh   # smoke testing of the system 
                     '''
 
                 echo "======== Provisioning Mysql RDS ========"
