@@ -4,7 +4,6 @@
 # you can call the script by providing 2 args , the server name in the inventory file and the location of the inventory file
 # EXPAMPLE  : ./AddServerIPtoInventory.sh Mongodb ./inventory
 
-echo $1
 ServerIP=$(terraform output | grep $1 | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
 if [ ! -e $2 ];then                                             # Create the inventory file if doesn't exist
     touch $2
