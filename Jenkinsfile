@@ -71,11 +71,13 @@ pipeline{
                          '''
                 
                 echo "========Deploy the new client ========"
-                sh ''' 
-                    ./scripts/GetVarsForMysqlClient.sh  
-                    cd ConfigurationManagement
-                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  MysqlClient.yml
-                '''
+                script{
+                    Mysql_endpoint=sh (script:'./scripts/GetVarsForMysqlClient.sh',  returnStdout: true)
+                }
+                echo "REBNA YOUSETER  2 : ${Mysql_endpoint}"
+
+                sh '''cd ConfigurationManagement
+                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  MysqlClient.yml'''
             }}}
             post{
                 always{
