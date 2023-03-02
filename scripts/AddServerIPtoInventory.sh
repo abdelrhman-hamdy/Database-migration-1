@@ -23,4 +23,4 @@ fi
 
 
 
-export $1=$ServerIP
+echo $ServerIP

@@ -36,12 +36,15 @@ pipeline{
                          '''
 
                 echo "========Creating Inventory File========"
-                sh '''#!/bin/bash
-                      cd IaC/dev; source ../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory'''
-                sh '''#!/bin/bash 
-                      cd IaC/dev; source ../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'''
-                sh '''#!/bin/bash 
-                      cd IaC/dev; source ../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'''            
+                script{
+                Mongodb_public_ip= sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory', returnStdout: true)
+                }
+                script{ 
+                MockServer_public_ip= sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory', returnStdout: true)
+                }
+                script{
+                MockServer_private_ip=sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory',  returnStdout: true)          
+                }
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
                     ./scripts/GetVarsForMongoClient.sh 
