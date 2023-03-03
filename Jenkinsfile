@@ -61,10 +61,15 @@ pipeline{
                         terraform apply -target=module.Mysql -auto-approve
                          '''
                 
-                echo "========Deploy the new client ========"
-                
+                echo "========Deploy the new client ========" 
                 sh'./scripts/GetVarsForMysqlClient.sh'
                 sh '''cd ConfigurationManagement;ansible-playbook -i inventory --private-key ../hamdy_key.pem  MysqlClient.yml'''
+
+                echo "========Testing That Client reads data from server and inserts in the database ========"
+                sh '''
+                     export dbhost=$(grep dbhost ConfigurationManagement/roles/run_mysql_client/files/.Mysqlenv | cut -d= -f2)
+                     ./Testing/TestingMysqlClientInsertDataToDB.sh   # smoke testing of the system 
+                    '''
             }}}
             post{
                 always{
@@ -72,6 +77,7 @@ pipeline{
                 }
                 success{
                     echo "========A executed successfully========"
+                    sh 'cd IaC/dev;terraform destroy -auto-approve'
                 }
                 failure{
                     echo "========A execution failed========"
