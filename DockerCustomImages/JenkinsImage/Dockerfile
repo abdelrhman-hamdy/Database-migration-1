@@ -28,11 +28,20 @@ COPY jenkins-casc.yaml /usr/local/jenkins-casc.yaml
 # tell the jenkins config-as-code plugin where to find the yaml file
 ENV CASC_JENKINS_CONFIG /usr/local/jenkins-casc.yaml
 
+#install terraform
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 RUN apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-
 RUN apt update -y
 RUN apt install terraform -y
 
+# install ansible
 RUN apt-add-repository ppa:ansible/ansible
 RUN apt install ansible -y
+
+
+# install mongodb
+RUN apt install wget
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add -
+RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+RUN apt-get update
+RUN apt-get install -y mongodb-org
