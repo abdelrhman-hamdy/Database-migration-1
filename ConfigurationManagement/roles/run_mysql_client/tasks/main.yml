@@ -1,6 +1,6 @@
     - name : Copy enviromentfile file
       copy: 
-        src: .env
+        src: .Mysqlenv
         dest: /home/ubuntu/.Mysqlenv
     
     - name: Run Mysql Client  container
