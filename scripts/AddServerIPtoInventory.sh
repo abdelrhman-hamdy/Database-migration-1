@@ -20,6 +20,3 @@ else
     echo $ServerIP >> $2
 fi
 
-
-
-echo $ServerIP

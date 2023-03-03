@@ -36,29 +36,14 @@ pipeline{
                          '''
 
                 echo "========Creating Inventory File========"
-                script{
-                Mongodb_public_ip= sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory', returnStdout: true)
-                }
-                echo "REBNA YOUSETER 1 :${Mongodb_public_ip}"
-                script{ 
-                MockServer_public_ip= sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory', returnStdout: true)
-                }
+                
+                sh'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory'
+                sh'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
+                sh'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'   
 
-                echo "REBNA YOUSETER  2 : ${MockServer_public_ip}"
-
-                script{
-                MockServer_private_ip=sh(script:'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory',  returnStdout: true)          
-                }
-
-                echo "REBNA YOUSETER 3: ${MockServer_private_ip}"
-                environment {
-                   Mongodb_public_ip="${Mongodb_public_ip}"
-                    MockServer_public_ip="${MockServer_public_ip}"
-                    MockServer_private_ip="${MockServer_private_ip}"
-                }
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
-                    ./scripts/GetVarsForMongoClient.sh 
+                    ./scripts/GetVarsForMongoClient.sh mongodb
                     cd ConfigurationManagement
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ../ansibleVault
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ../ansibleVault
@@ -66,7 +51,8 @@ pipeline{
 
                 echo "========Testing That Client reads data from server and inserts in the database ========"
                 sh '''
-                    . Testing/TestClientInsertDataToDB.sh   # smoke testing of the system 
+                     export dbhost=$(grep dbhost ConfigurationManagement/roles/run_Server_client/files/.env | cut -d= -f2)
+                     ./Testing/TestClientInsertDataToDB.sh   # smoke testing of the system 
                     '''
 
                 echo "======== Provisioning Mysql RDS ========"
@@ -76,13 +62,9 @@ pipeline{
                          '''
                 
                 echo "========Deploy the new client ========"
-                script{
-                    Mysql_endpoint=sh (script:'./scripts/GetVarsForMysqlClient.sh',  returnStdout: true)
-                }
-                echo "REBNA YOUSETER  2 : ${Mysql_endpoint}"
-
-                sh '''cd ConfigurationManagement
-                    ansible-playbook -i inventory --private-key ../hamdy_key.pem  MysqlClient.yml'''
+                
+                sh'./scripts/GetVarsForMysqlClient.sh'
+                sh '''cd ConfigurationManagement;ansible-playbook -i inventory --private-key ../hamdy_key.pem  MysqlClient.yml'''
             }}}
             post{
                 always{
