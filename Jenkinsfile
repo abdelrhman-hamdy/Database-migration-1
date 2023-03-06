@@ -13,14 +13,14 @@ pipeline{
     }
     stages{
         stage("Checkout"){
-                
             steps{
                 echo "========Checkout Github repo========"
-                //git branch: 'main', url: 'https://github.com/abdelrhman-hamdy/Database-migration-1.git'
+                git branch: 'main', url: 'https://github.com/abdelrhman-hamdy/Database-migration-1.git'
+
             }}
-        stage("Pre-work"){
+        stage("Deploy old system"){
             steps{
-                echo "========Deploy pre-work Infrastructure========"
+                echo "========Deploy old system========"
 
                 echo "========Loading Required credentials========"
                 withCredentials([sshUserPrivateKey(credentialsId: 'hamdy_key', keyFileVariable: 'hamdy_key'),
@@ -36,10 +36,7 @@ pipeline{
                          '''
 
                 echo "========Creating Inventory File========"
-                
-                sh'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mongodb ../../ConfigurationManagement/inventory'
-                sh'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mockserver ../../ConfigurationManagement/inventory'
-                sh'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh ServerPrivateIp ../../ConfigurationManagement/inventory'   
+                sh'cd IaC/dev;../../scripts/AddServerIPtoInventory.sh mongodb mockserver ServerPrivateIp ../../ConfigurationManagement/inventory'  
 
                 echo "========Configuring Mongodb and Mockserver ========"
                 sh ''' 
@@ -48,29 +45,72 @@ pipeline{
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mongodb.yml --vault-password-file ../ansibleVault
                     ansible-playbook -i inventory --private-key ../hamdy_key.pem  mockserver.yml --vault-password-file ../ansibleVault
                 '''
-
+            }
+        }
+        stage("Testing the old system") { 
+            steps{
                 echo "========Testing That Client reads data from server and inserts in the database ========"
                 sh '''
                      export dbhost=$(grep dbhost ConfigurationManagement/roles/run_Server_client/files/.env | cut -d= -f2)
                      ./Testing/TestClientInsertDataToDB.sh   # smoke testing of the system 
                     '''
-
+            }
+        }
+        stage("Provisioning and Configuring the new system"){
+            steps{
                 echo "======== Provisioning Mysql RDS ========"
                 sh '''  cd IaC/dev
                         terraform init
                         terraform apply -target=module.Mysql -auto-approve
                          '''
-                
+        
                 echo "========Deploy the new client ========" 
                 sh'./scripts/GetVarsForMysqlClient.sh'
                 sh '''cd ConfigurationManagement;ansible-playbook -i inventory --private-key ../hamdy_key.pem  MysqlClient.yml'''
+            }
+        }
+        stage("Testing New system"){
 
+            steps{
                 echo "========Testing That Client reads data from server and inserts in the database ========"
                 sh '''
                      export dbhost=$(grep dbhost ConfigurationManagement/roles/run_mysql_client/files/.Mysqlenv | cut -d= -f2)
                      ./Testing/TestingMysqlClientInsertDataToDB.sh   # smoke testing of the system 
                     '''
-            }}}
+            }
+        }
+        stage("Disconnecting mongo client from inserting data to the database"){
+            steps{
+                sh '''cd ConfigurationManagement;ansible-playbook -i inventory --private-key ../hamdy_key.pem  DisconnectMongoClient.yml'''
+
+            }
+        }
+
+        stage("Migration"){
+            steps{
+                sh '''
+                export mysqlhost=$(sed -n '/dbhost=.*/p' ./ConfigurationManagement/roles/run_mysql_client/files/.Mysqlenv | cut -d= -f2)
+                export mongohost=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=MongodbServer" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text)
+                python ./scripts/MigrationScript.py
+                '''
+            }
+        }
+        stage("Testing that data Migrated Successfully"){
+            steps{
+                sh '''
+                export mysqlhost=$(sed -n '/dbhost=.*/p' ./ConfigurationManagement/roles/run_mysql_client/files/.Mysqlenv | cut -d= -f2)
+                export mongohost=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=MongodbServer" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text)
+                python ./Testing/TestIfMigrationWasSuccessful.py
+                '''
+                
+            }
+        } 
+        stage("Destroy mongodb database"){
+            steps{
+                sh 'terraform destroy -target=module.MongodbServer'
+            }
+        }
+            }
             post{
                 always{
                     echo "========always========"
@@ -85,5 +125,3 @@ pipeline{
                 }
             }
         }
-    
-

@@ -2,14 +2,12 @@ version: "3"
 services:
   MockServer: 
     image: abdelrhmanhamdy/server
-    container_name: mockserver
     ports:
       - "8282:8282"
-  MongoClient:
+  MysqlClient:
     env_file:
-      - .env
-    image: abdelrhmanhamdy/mongoclient
-    container_name: mongoclient
+      - .Mysqlenv
+    image: abdelrhmanhamdy/mysqlclient
     depends_on:
       - MockServer
     restart: on-failure:3

@@ -1,0 +1,8 @@
+- name: stop Mongo client container 
+  command: docker container stop mongoclient
+
+- name: replace the docker-compose file 
+  become: true 
+  copy: 
+    src: docker-compose.yml 
+    dest: /home/ubuntu/docker-compose.yml
