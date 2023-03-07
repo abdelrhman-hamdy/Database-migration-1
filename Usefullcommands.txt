@@ -1,3 +1,0 @@
-aws ec2 describe-instances --filters "Name=tag:Name,Values=MongodbServer" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text > inventory  # grep EC2 PUBLIC IP
-
-aws rds  describe-db-instances --db-instance-identifier mysql-database  --query "DBInstances[*].Endpoint.Address" --output text # grep Mysql database endpoint
