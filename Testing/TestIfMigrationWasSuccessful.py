@@ -1,3 +1,11 @@
+import sys
+import subprocess
+
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pymongo==4.3.3'])
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'json5==0.9.6'])
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'mysql-connector==2.2.9'])
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pandas==1.3.4'])
+
 import pandas as pd 
 from  random import randint
 from pymongo import MongoClient
