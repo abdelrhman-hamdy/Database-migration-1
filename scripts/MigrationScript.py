@@ -18,6 +18,9 @@ dbpass=os.getenv('DB_PASSWORD')
 mysqlhost=os.getenv('mysqlhost')
 mongohost=os.getenv('mongohost')
 
+print ("MONGOHOST :  ",mongohost)
+print ("MYSQLHOST :  ",mysqlhost)
+
 #Log in Mysql
 mysqldb = mysql.connector.connect(
   host=mysqlhost,
@@ -41,13 +44,12 @@ client = MongoClient(f'mongodb://{dbuser}:{dbpass}@{mongohost}:27017/')
 mydb = client["server"]
 mycol = mydb["customer"]
 
-# Get total number of Documents
-docs_num=mycol.count({})
 
 # Get all mongodb old data
 mydoc = mycol.find()
 
-
+# Get total number of Documents
+docs_num=mycol.count({})
 # I want the old data from mongodb to be inserted at the top of mysql table -because it's the old data- ,so it will be done in two steps
 # first step is to update all ID values to be ID = ID + mongo_old_data_rows_number
 # second step is inserting mongodb old data starting from id value 1 to mongo_old_data_rows_number
