@@ -35,14 +35,18 @@ RUN apt update -y
 RUN apt install terraform -y
 
 # install ansible
-RUN apt-add-repository ppa:ansible/ansible
+#RUN apt-add-repository ppa:ansible/ansible
 RUN apt install ansible -y
 
 
 # install mongodb
-RUN apt install wget
+RUN apt install wget -y
 RUN wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add -
 RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
-RUN apt-get update
+RUN apt-get update -y
 RUN apt-get install -y mongodb-org
-RUN apt install default-mysql-client
+RUN apt install default-mysql-client -y
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
+RUN apt-get install python3-pip -y

@@ -5,7 +5,7 @@ pipeline{
         AWS_ACCESS_KEY_ID=credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY=credentials('jenkins-aws-secret-access-key')
         AWS_REGION= "us-east-1"
-        DB_PASSWORD=credentials('mongo-db-password')
+        DB_PASSWORD=credentials('db-password')
         DB_USERNAME="hamdy"
         TF_VAR_db_password="${DB_PASSWORD}" 
         TF_VAR_db_username="${DB_USERNAME}"
