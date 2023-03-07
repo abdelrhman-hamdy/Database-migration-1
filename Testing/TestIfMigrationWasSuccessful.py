@@ -40,10 +40,12 @@ df_rows = df.shape[0]
 
 for i in range(100):
     random_index = randint(0,df_rows-1)
+    print("Random Index: ",random_index)
     id=df.iloc[random_index].values[0]
+    print("THE ID: ",id)
     objInstance = ObjectId(id)
     mongo_doc=customer_collection.find_one({"_id":objInstance})
-    
+    print('FIRSTNAME OF THE ID',mongo_doc["receiver"]["firstName"])
     mycursor.execute(f'SELECT EXISTS(SELECT * FROM customer WHERE firstName="{mongo_doc["receiver"]["firstName"]}" AND  lastName="{mongo_doc["receiver"]["lastName"]}" AND  email="{mongo_doc["receiver"]["email"]}" AND price={mongo_doc["price"]} AND country="{mongo_doc["address"]["country"]}" AND city="{mongo_doc["address"]["city"]}" AND  street="{mongo_doc["address"]["street"]}" AND x={mongo_doc["address"]["coordinates"]["x"]} AND y={mongo_doc["address"]["coordinates"]["y"]} AND creationDate="{mongo_doc["creationDate"]}" );')
     row_exist=mycursor.fetchone()
     if not row_exist : 

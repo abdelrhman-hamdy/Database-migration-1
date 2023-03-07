@@ -119,11 +119,11 @@ pipeline{
                 }
                 success{
                     echo "========A executed successfully========"
-                    sh 'cd IaC/dev;terraform destroy -auto-approve'
+                    //sh 'cd IaC/dev;terraform destroy -auto-approve'
                 }
                 failure{
                     echo "========A execution failed========"
-                    sh 'cd IaC/dev;terraform destroy -auto-approve'
+                    //sh 'cd IaC/dev;terraform destroy -auto-approve'
                 }
             }
         }
