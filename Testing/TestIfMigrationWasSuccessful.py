@@ -33,14 +33,13 @@ mycursor = mysqldb.cursor()
 mycursor.execute("use server;")
 
 
-
-df = pd.read_csv(r'./scripts/mongodb_ids.csv')
+   
+df = pd.read_csv('mongodb_ids.csv')
 
 df_rows = df.shape[0]
 
 for i in range(100):
     random_index = randint(0,df_rows-1)
-    print("Random Index: ",random_index)
     id=df.iloc[random_index].values[0]
     print("THE ID: ",id)
     objInstance = ObjectId(id)
