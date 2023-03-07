@@ -1,0 +1,6 @@
+services:
+  mysqlclient:
+    env_file:
+      - .Mysqlenv
+    build: .
+

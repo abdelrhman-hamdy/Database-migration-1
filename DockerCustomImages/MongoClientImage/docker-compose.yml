@@ -1,0 +1,6 @@
+services:
+    mongoclient:
+        env_file:
+        - .env
+        build : .
+        container_name: mongoclient
