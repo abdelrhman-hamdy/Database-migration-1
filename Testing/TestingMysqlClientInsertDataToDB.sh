@@ -3,7 +3,6 @@
 value=$(mysql -h $dbhost  -u $DB_USERNAME -p$DB_PASSWORD -e "USE server;SELECT COUNT(*) FROM customer ;")
 
 rows_number1=$(echo $value | cut -d' ' -f2)
-echo $rows_number1
 
 # Raise an error in case of empty table and exit with 1
 if [ $rows_number1 -eq 0 ]; then
@@ -17,7 +16,6 @@ sleep 5
 value=$(mysql -h $dbhost  -u $DB_USERNAME -p$DB_PASSWORD -e "USE server;SELECT COUNT(*) FROM customer ;")
 
 rows_number2=$(echo $value | cut -d' ' -f2)
-echo $rows_number2
 
 if [ $rows_number1 -eq $rows_number2 ]; then
     echo "TEST FAILED:Client doesn't insert data to db"
