@@ -91,7 +91,7 @@ pipeline{
                 sh '''
                 export mysqlhost=$(sed -n '/dbhost=.*/p' ./ConfigurationManagement/roles/run_mysql_client/files/.Mysqlenv | cut -d= -f2)
                 export mongohost=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=MongodbServer" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text)
-                python ./scripts/MigrationScript.py
+                python3 ./scripts/MigrationScript.py
                 '''
             }
         }
@@ -100,7 +100,7 @@ pipeline{
                 sh '''
                 export mysqlhost=$(sed -n '/dbhost=.*/p' ./ConfigurationManagement/roles/run_mysql_client/files/.Mysqlenv | cut -d= -f2)
                 export mongohost=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=MongodbServer" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text)
-                python ./Testing/TestIfMigrationWasSuccessful.py
+                python3 ./Testing/TestIfMigrationWasSuccessful.py
                 '''
                 
             }
