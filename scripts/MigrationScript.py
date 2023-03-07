@@ -42,7 +42,7 @@ mydb = client["server"]
 mycol = mydb["customer"]
 
 # Get total number of Documents
-docs_num=mycol.count_documents({})
+docs_num=mycol.count({})
 
 # Get all mongodb old data
 mydoc = mycol.find()
