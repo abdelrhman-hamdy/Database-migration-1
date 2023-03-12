@@ -8,9 +8,9 @@
 <h3 align="center">Database Migration</h3>
 
 ## Table of contents :
-- [Overview](overview)
-- [Technologies Used](technologies-used)
-- [Before the Project](before-the-project)
+- [Overview](#overview)
+- [Technologies Used](#technologies-used)
+- [Before the Project](#before-the-project)
 
 
 ## Overview :
