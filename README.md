@@ -20,6 +20,8 @@
 * Initial phase :
  This where the legacy system was created, a Mock nodejs server that exposes port 8282, and once connected to a Python client, it generates a stream of JSON objects representing shipments data coming from different sources. The python client then  process this data and inserts it to a Mongodb server
 
+![](https://user-images.githubusercontent.com/69608603/224844935-000f3b79-b771-4155-9363-260db501c665.png)
+
 * Preparing for migration:
 In this stage, the New database engine was created which was Mysql besides the Updated version of the Python client. the new and old systems connected  simultaneously with the server
 
